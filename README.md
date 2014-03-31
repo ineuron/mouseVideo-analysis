@@ -1,7 +1,7 @@
 mouseVideo-analysis
 ===================
 
-Analysis of videos of single mice wondering about in a behavioural arena. Does some very basic tracking and spits out the center of mass for each frame, plus a buch of minor computations, like time spent in defined areas, distance travelled, speed, etc. Save .avi file with binary mask on top of original video.
+Analysis of videos of single mice wondering about in a behavioural arena. Does some very basic tracking and spits out the center of mass for each frame, plus a buch of minor computations, like time spent in defined areas, distance travelled, speed, etc. Saves .avi file with binary mask on top of original video.
 
 Requirements:
 -------------
