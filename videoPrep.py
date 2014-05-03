@@ -1,3 +1,23 @@
+# Sets the following parameters, with user input:
+#
+# Background: average of N random frames
+# Threshold: intensity value applied to the background subtracted image
+# Diameter for morphological operations
+# Boundaries for Nest and Food area, position of the nest and middle of arena
+# Start and End time for analysis (start applies to 1st movie and end to last movies of the series)
+#
+# User selects the first file of a movie series and the script creates a $HOME/analysis/ dir with the basename
+# of the file series with the following files:
+#
+# bg.npy - background
+# pmts.npy - values for arena areas and threholding
+# listOfFiles.txt - files in the series to be analysed
+# times.txt - start and end time for analysis
+#
+# vPrep can be called with True argument to visually check the output of the parameters selected
+#
+# Tiago Branco - March 2014
+
 import numpy as np
 import matplotlib.pylab as plt
 import os.path
@@ -77,7 +97,7 @@ def vPrep(fname, saveDir, check=False):
                   break
               except ValueError:
                   print("Invalid number, please try again ")
-          ths, morphDiameter = va.setThreshold(fname, aviProps, bg, uths, umorph)
+          ths, morphDiameter = va.setThreshold(fname, aviProps, bg, uths, umorph)def
 
   # Arena areas
   # --------------
@@ -112,6 +132,8 @@ def vPrep(fname, saveDir, check=False):
   np.save(saveDir + 'pmts', pmts)
   print('Parameters file saved')
 
+
+# --------------------------------------------------------------------------------------
 # Select movies to analyse
 initialdir = '/lmb/home/tbranco/data'
 #initialdir = '/lmb/home/tbranco/testdata'
