@@ -97,7 +97,7 @@ def vPrep(fname, saveDir, check=False):
                   break
               except ValueError:
                   print("Invalid number, please try again ")
-          ths, morphDiameter = va.setThreshold(fname, aviProps, bg, uths, umorph)def
+          ths, morphDiameter = va.setThreshold(fname, aviProps, bg, uths, umorph)
 
   # Arena areas
   # --------------
