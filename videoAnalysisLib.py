@@ -182,7 +182,7 @@ def setPoints(fname, aviProps, bg):
     ax.add_patch(rect2)
     fig.canvas.draw()
 
-   pts = [nestPosition, nestArea, arenaCentre, feedingArea]
+    pts = [nestPosition, nestArea, arenaCentre, feedingArea]
     #fsaveName = fname.rstrip(".avi") + "_arena"
     #np.save(fsaveName, ths)
     #print fsaveName, "saved"
