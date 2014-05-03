@@ -11,7 +11,7 @@ import scipy.ndimage as ndimage
 import os.path
 import cv2
 
-saveDir = '/lmb/home/tbranco/analysis/'
+#saveDir = '/lmb/home/tbranco/analysis/'
 
 # Auxiliary functions
 def getFileName(fname):
@@ -36,6 +36,11 @@ def time2frame(t, aviProps):   # Time in seconds
     t = t*1000
     f = t/(1000/fps)
     return int(f)
+
+def frame2time(f, aviProps):
+    fps = aviProps[4]
+    t = f/float(fps)
+    return t
 
 def erode(img, erosion_size):
     erosion_size = 2*erosion_size+1
@@ -101,11 +106,11 @@ def getBg(fname, aviProps, nFrames):
         ret, frame = cap.read()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         frames[:,:,f] = gray
-    fileName = getFileName(fname)
-    fsaveName = saveDir + fileName.rstrip(".avi") + "_bg" 
-    np.save(fsaveName, frames.mean(axis=2))
-    cap.release()
-    print fsaveName, "saved"
+    #fileName = getFileName(fname)
+    #fsaveName = saveDir + fileName.rstrip(".avi") + "_bg" 
+    #np.save(fsaveName, frames.mean(axis=2))
+    #cap.release()
+    #print fsaveName, "saved"
     return frames.mean(axis=2)
 
 def setThreshold(fname, aviProps, bg, ths, morphDiameter):    
@@ -177,7 +182,7 @@ def setPoints(fname, aviProps, bg):
     ax.add_patch(rect2)
     fig.canvas.draw()
 
-    pts = [nestPosition, nestArea, arenaCentre, feedingArea]
+   pts = [nestPosition, nestArea, arenaCentre, feedingArea]
     #fsaveName = fname.rstrip(".avi") + "_arena"
     #np.save(fsaveName, ths)
     #print fsaveName, "saved"
@@ -203,8 +208,10 @@ def plotArena(aviProps, pmts, bg):
     rect2 = plt.Rectangle((feedingArea[0][0],feedingArea[0][1]),W,H, fc='c', alpha=0.2)
     ax.add_patch(rect2)
     fig.canvas.draw()
+
+
 # Processing functions
-def processFrames(fname, aviProps, tStart, tEnd, bg, pmts, nestThreshold, saveAVI=False):   # Time in seconds
+def processFrames(fname, aviFname, aviProps, tStart, tEnd, bg, pmts, nestThreshold, saveAVI=False):   # Time in seconds
     startFrame = time2frame(tStart, aviProps)
     endFrame = time2frame(tEnd, aviProps)
     if endFrame>aviProps[6]: endFrame=aviProps[6]
@@ -218,7 +225,7 @@ def processFrames(fname, aviProps, tStart, tEnd, bg, pmts, nestThreshold, saveAV
     cap.set(1, startFrame)
     if saveAVI:
         fourcc = cv2.cv.FOURCC('X','V','I','D')
-        out = cv2.VideoWriter(saveDir+fileName.rstrip(".avi")+"_output.avi", fourcc, aviProps[4], (int(aviProps[2]), int(aviProps[3]))) 
+        out = cv2.VideoWriter(aviFname, fourcc, aviProps[4], (int(aviProps[2]), int(aviProps[3]))) 
 
     mousePositions, mouseSize = [], []
     for f in np.arange(startFrame, endFrame):
@@ -250,13 +257,13 @@ def processFrames(fname, aviProps, tStart, tEnd, bg, pmts, nestThreshold, saveAV
     mouseSize = np.array(mouseSize)
     mouseSize.shape = (len(mouseSize),1)
     dataOut = np.hstack((np.array(mousePositions), mouseSize))
-    fsaveName = saveDir + fileName.rstrip(".avi") + "_trackingData"
-    np.save(fsaveName, dataOut)
-    print fsaveName, "saved"
+    #fsaveName = saveDir + fileName.rstrip(".avi") + "_trackingData"
+    #np.save(fsaveName, dataOut)
+    #print fsaveName, "saved"
     return dataOut
 
 def analyseData(fname, aviProps, bg,  pmts, PLOT=True):
-    data = np.load(fname)
+    data = np.loadtxt(fname)
     fps = aviProps[4]    
     fileName = getFileName(fname)
 
@@ -307,7 +314,7 @@ def analyseData(fname, aviProps, bg,  pmts, PLOT=True):
     for r in runs:
         dist = []
         for p in np.arange(0, len(r)-1):
-            dist.append(getDistance(r[n],r[n+1]))
+            dist.append(getDistance(r[p],r[p+1]))
         runsDistance.append(np.sum(dist))
         runsTime.append(len(r)*secPerFrame)
         
@@ -317,14 +324,16 @@ def analyseData(fname, aviProps, bg,  pmts, PLOT=True):
       #ax.plot(data[:,1], data[:,0])
       for n in np.arange(0, len(runs)):
           ax.plot(runs[n][:,1], runs[n][:,0])
-      plt.show()
+      #plt.show()
+      
 
     results = [distSum, nestCounter, foodCounter, leftCounter, rightCounter, runsDistance, runsTime]
     resultsDict = {'Total distance':[distSum], 'Nest time':[nestCounter], 'FoodArea time':[foodCounter], 'Left side time':[leftCounter], 'Right side time':[rightCounter], 'Number of runs':[len(runs)], 'Distance per run':[runsDistance], 'Time per run':[runsTime]}     
-    fsaveName = saveDir + fileName.rstrip("_trackingData.npy") + "_trackingDataProcessed.txt"
-    writeDict(resultsDict, fsaveName)
-    print fsaveName, "saved"
-    return data, resultsDict
+    #fsaveName = saveDir + fileName.rstrip("_trackingData.npy") + "_trackingDataProcessed.txt"
+    #writeDict(resultsDict, fsaveName)
+    #print fsaveName, "saved"
+    return data, resultsDict, fig
+
 
 
 
