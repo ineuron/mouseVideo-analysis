@@ -12,9 +12,15 @@ Only tested properly in Linux. Early versions worked on Windows and MacOS X, but
 
 List of files:
 --------------
-VideoAnalysisLib.py - library of functions to perform tracking, analysis, file I/O, everything really
+videoAnalysisLib.py - library of functions to perform tracking, analysis, file I/O, everything really
+videoPrep.py - routines to define background, threshold, arena areas and segement of movie sequence to analyse
 VideoProcess.py - 
 VideoAnalysisMain.py - 
 
 
-testing
+Workflow:
+---------
+Currently the video data acquired from a single experiment 
+
+1. Run videoPrep 
+2.
