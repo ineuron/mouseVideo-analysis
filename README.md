@@ -20,7 +20,7 @@ VideoAnalysisMain.py -
 
 Workflow:
 ---------
-Currently the video data acquired from a single experiment 
+Currently the video data acquired from a single experiment is saved across multiple .avi files, which are processed as a movie series.
 
-1. Run videoPrep 
+1. python videoPrep.py [True] - select the movie series and the various parameters required to process the movie files. The "True" argument is optional is if present allows visual inspection of the outcome of the selected paramters. A analysis folder is automatically created with the basename of the series where all analysis data will be saved.
 2.
