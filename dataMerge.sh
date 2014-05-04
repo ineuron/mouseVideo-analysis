@@ -19,7 +19,7 @@ rm -f $DIR/file*.txt
 avimerge -o $DIR/trackingMovie.avi -i $DIR/file*.avi
 rm -f $DIR/file*.avi
 
-python /lmb/home/tbranco/code/dataProcess.py $1
+python $HOME/code/github/mouseVideo-analysis/dataProcess.py $1
 
 #for f in $DIR/file*.avi
 #do

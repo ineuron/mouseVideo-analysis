@@ -117,7 +117,7 @@ def setThreshold(fname, aviProps, bg, ths, morphDiameter):
     cap = cv2.VideoCapture(fname)
     sPlot = [221,222,223,224]
     nFrames = aviProps[6]
-    frames = np.arange(0, nFrames, int(nFrames/4))
+    frames = np.random.random_integers(int(nFrames/2), nFrames, 4)
     fig = plt.figure()
     cmap = colormap.gray
     cmap.set_over('r')

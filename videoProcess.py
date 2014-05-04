@@ -1,3 +1,4 @@
+
 import numpy as np
 import matplotlib.pylab as plt
 import os.path
@@ -35,6 +36,7 @@ tEnd = tStart + secPerCpu
 print tStart, tEnd
 while True:
   try:
+      print(saveDir+"bg.npy")
       bg = np.load(saveDir + "bg.npy")
       print("Background file loaded")
   except IOError:

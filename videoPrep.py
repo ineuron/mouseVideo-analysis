@@ -14,7 +14,7 @@
 # listOfFiles.txt - files in the series to be analysed
 # times.txt - start and end time for analysis
 #
-# vPrep can be called with True argument to visually check the output of the parameters selected
+# vPrep can be called with "False" argument to ommit visually checking the output of the parameters selected
 #
 # Tiago Branco - March 2014
 
@@ -32,9 +32,9 @@ import sys
 if len(sys.argv)>1: 
     check = sys.argv[1]
 else:
-    check = False
+    check = True
 
-def vPrep(fname, saveDir, check=False):
+def vPrep(fname, saveDir, check=True):
   fileName = va.getFileName(fname)
   aviProps = va.getAVIinfo(fname)
   plt.ion()
@@ -92,7 +92,9 @@ def vPrep(fname, saveDir, check=False):
       else:
           while True:
               try:
+                  print "Current threshold is", ths
                   uths = int(raw_input("Select new threshold "))
+                  print "Current diameter is", morphDiameter
                   umorph = int(raw_input("Select new diameter to erode and dilate "))
                   break
               except ValueError:
@@ -102,10 +104,10 @@ def vPrep(fname, saveDir, check=False):
   # Arena areas
   # --------------
   # Default values
-  nestPos = [145, 600]
-  nestArea = [(32,690),(220,680),(210,520)]
-  arenaCenter = [570,605]
-  foodArea = [(795,735),(935,735),(940,605)]
+  nestPos = [125, 220]
+  nestArea = [(1,320),(225,320),(120,125)]
+  arenaCenter = [600,244]
+  foodArea = [(785,360),(960,360),(860,185)]
 
   plt.ioff()
   arenaOk = False

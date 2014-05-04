@@ -11,8 +11,7 @@ import sys
 mode = sys.argv[1]
 totalCpus = int(sys.argv[2])
 activeDir = sys.argv[3]
-#activeDir = '/lmb/home/tbranco/analysis/testmovie'
-#activeDir = '/lmb/home/tbranco/analysis/117641a_hab2'
+
 
 # Read listOfFiles.txt
 try:
@@ -56,18 +55,17 @@ for f in fileList[1:]:
   #    cpus = int(np.ceil((endFrame-startFrame)/float(va.time2frame(secPerCpu, aviProps))))
       #print 'corrected cpus =', cpus
   if mode=='local':
-      os.system('SGE_TASK_ID=1')
+      os.system('export SGE_TASK_ID=1')
       script = 'job.sh '+f+' '+activeDir+'/ '+str(startFrame)+' '+str(nfile)+' '+str(secPerCpu)
   else:
       #filename saveDir startFrame nfile ncall secPerCpu
-      #script =  'qsub -t 1-'+str(cpus)+' -q all.q@fmb125.lmb.internal -N job_1 -e /dev/null -o /dev/null job.sh '+f+' '+activeDir+' '+times[0]+' '+str(nfile)+' dummy '+str(secPerCpu)
       script =  'qsub -t 1-'+str(cpus)+' -l node_type=m620+ -N job_1 -o /dev/null -e /dev/null job.sh '+f+' '+activeDir+'/ '+str(startFrame)+' '+str(nfile)+' '+str(secPerCpu)
+      #script =  'qsub -t 1-'+str(cpus)+' -l node_type=m620+ -N job_1 -e /dev/null job.sh '+f+' '+activeDir+'/ '+str(startFrame)+' '+str(nfile)+' '+str(secPerCpu)
   #print aviProps[6], endFrame-startFrame, va.time2frame(secPerCpu, aviProps), cpus
   #print script
   os.system(script)
   nfile+=1
 
-#script = 'qsub -q all.q@fmb125.lmb.internal -hold_jid job_1 job2.sh '+activeDir
 script = 'sh dataMerge.sh '+activeDir+' '+str(totalCpus+1)
 #print script
 os.system(script)
