@@ -45,7 +45,7 @@ def vPrep(fname, saveDir, check=True):
   nFrames = 10
 
   bgOK = False
-  bgFile = saveDir + fileName.rstrip(".avi") + "_bg.npy"
+  bgFile = saveDir + "/bg.npy"
   if os.path.isfile(bgFile):
     print("Background file exists, loading...")
     bg = np.load(bgFile)
@@ -75,7 +75,7 @@ def vPrep(fname, saveDir, check=True):
 
   pmtsFileExists = False
   thsOK = False
-  pmtsFile = saveDir + fileName.rstrip(".avi") + "_pmts.npy"
+  pmtsFile = saveDir + "/pmts.npy"
   if os.path.isfile(pmtsFile):
     print("Parameters file exists, loading...")
     pmtsFileExists = True
@@ -116,7 +116,7 @@ def vPrep(fname, saveDir, check=True):
     va.plotArena(aviProps, filePmts, bg)
     pmts = [[ths], [morphDiameter], filePmts[2], filePmts[3], filePmts[4], filePmts[5]]
   else:
-    print("Generating arena with defauls settings...")
+    print("Generating arena with default settings...")
     pmts = [[ths], [morphDiameter], nestPos, nestArea, arenaCenter, foodArea]
     va.plotArena(aviProps, pmts, bg)
   if check:

@@ -48,8 +48,14 @@ for f in fileList[1:]:
       if endFrame>aviProps[6]: endFrame=aviProps[6]
   else:
       endFrame = aviProps[6]
-  framesPerCpu = np.ceil(float(endFrame-startFrame)/cpus)
-  secPerCpu = va.frame2time(framesPerCpu, aviProps)
+  
+  if mode=='local':
+      framesPerCpu = np.ceil(float(endFrame-startFrame))
+      secPerCpu = va.frame2time(framesPerCpu, aviProps)
+  else:
+      framesPerCpu = np.ceil(float(endFrame-startFrame)/cpus)
+      secPerCpu = va.frame2time(framesPerCpu, aviProps)
+
   #if secPerCpu < minCpuTime: 
   #    secPerCpu = minCpuTime
   #    cpus = int(np.ceil((endFrame-startFrame)/float(va.time2frame(secPerCpu, aviProps))))
@@ -59,13 +65,14 @@ for f in fileList[1:]:
       script = 'job.sh '+f+' '+activeDir+'/ '+str(startFrame)+' '+str(nfile)+' '+str(secPerCpu)
   else:
       #filename saveDir startFrame nfile ncall secPerCpu
-      script =  'qsub -t 1-'+str(cpus)+' -l node_type=m620+ -N job_1 -o /dev/null -e /dev/null job.sh '+f+' '+activeDir+'/ '+str(startFrame)+' '+str(nfile)+' '+str(secPerCpu)
+      #script =  'qsub -t 1-'+str(cpus)+' -l node_type=m620+ -N job_1 -o /dev/null -e /dev/null job.sh '+f+' '+activeDir+'/ '+str(startFrame)+' '+str(nfile)+' '+str(secPerCpu)
+      script =  'qsub -t 1-'+str(cpus)+' -N job_1 -o /dev/null -e /dev/null job.sh '+f+' '+activeDir+'/ '+str(startFrame)+' '+str(nfile)+' '+str(secPerCpu)
       #script =  'qsub -t 1-'+str(cpus)+' -l node_type=m620+ -N job_1 -e /dev/null job.sh '+f+' '+activeDir+'/ '+str(startFrame)+' '+str(nfile)+' '+str(secPerCpu)
   #print aviProps[6], endFrame-startFrame, va.time2frame(secPerCpu, aviProps), cpus
   #print script
   os.system(script)
   nfile+=1
 
-script = 'sh dataMerge.sh '+activeDir+' '+str(totalCpus+1)
+script = 'sh dataMerge.sh '+activeDir+' '+str(totalCpus+1)+' '+str(len(fileList[1:]))+' '+str(cpus)
 #print script
 os.system(script)

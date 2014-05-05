@@ -100,17 +100,12 @@ def getBg(fname, aviProps, nFrames):
     if nFrames>aviProps[6]: nFrames=aviProps[6]
     cap = cv2.VideoCapture(fname)
     frames = np.zeros([aviProps[3],aviProps[2],nFrames])
-    randomFrames = np.random.randint(aviProps[6], size=nFrames)
+    randomFrames = np.random.randint(aviProps[6]/2., aviProps[6], size=nFrames)
     for f in np.arange(0,nFrames):
         cap.set(1, randomFrames[f])
         ret, frame = cap.read()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         frames[:,:,f] = gray
-    #fileName = getFileName(fname)
-    #fsaveName = saveDir + fileName.rstrip(".avi") + "_bg" 
-    #np.save(fsaveName, frames.mean(axis=2))
-    #cap.release()
-    #print fsaveName, "saved"
     return frames.mean(axis=2)
 
 def setThreshold(fname, aviProps, bg, ths, morphDiameter):    
@@ -228,6 +223,7 @@ def processFrames(fname, aviFname, aviProps, tStart, tEnd, bg, pmts, nestThresho
         out = cv2.VideoWriter(aviFname, fourcc, aviProps[4], (int(aviProps[2]), int(aviProps[3]))) 
 
     mousePositions, mouseSize = [], []
+    counter = 1
     for f in np.arange(startFrame, endFrame):
         # Read frame
         ret, frame = cap.read()
@@ -235,6 +231,10 @@ def processFrames(fname, aviFname, aviProps, tStart, tEnd, bg, pmts, nestThresho
 
         # Process frame
         bgSubGray = subtractBg(gray, bg)        
+        if counter==1: 
+            meanFrame = bgSubGray
+        else:
+            meanFrame = meanFrame*(1-1./counter) + bgSubGray*(1./counter) 
         thsGray = applyThreshold(bgSubGray, ths)
         thsGray = erode(thsGray, morphDiameter)
         thsGray = dilate(thsGray, morphDiameter)
@@ -252,6 +252,7 @@ def processFrames(fname, aviFname, aviProps, tStart, tEnd, bg, pmts, nestThresho
             mousePositions.append(cOm)
             frame[cOm[0]-5:cOm[0]+5,cOm[1]-5:cOm[1]+5,1] = 153
         if saveAVI: out.write(frame)
+        counter+=1
     cap.release()
     out.release()
     mouseSize = np.array(mouseSize)
@@ -260,7 +261,7 @@ def processFrames(fname, aviFname, aviProps, tStart, tEnd, bg, pmts, nestThresho
     #fsaveName = saveDir + fileName.rstrip(".avi") + "_trackingData"
     #np.save(fsaveName, dataOut)
     #print fsaveName, "saved"
-    return dataOut
+    return dataOut, meanFrame
 
 def analyseData(fname, aviProps, bg,  pmts, PLOT=True):
     data = np.loadtxt(fname)
@@ -321,7 +322,7 @@ def analyseData(fname, aviProps, bg,  pmts, PLOT=True):
     # Plot trajectory
     if PLOT:
       fig, ax = showArena(aviProps, bg)
-      #ax.plot(data[:,1], data[:,0])
+      ax.plot(data[:,1], data[:,0])
       for n in np.arange(0, len(runs)):
           ax.plot(runs[n][:,1], runs[n][:,0])
       #plt.show()

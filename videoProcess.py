@@ -30,6 +30,7 @@ print fname, aviProps
 fileName = va.getFileName(fname)
 trackFname = saveDir + 'file' + str(nfile) + '_' + ncall + '.txt'
 aviFname = saveDir + 'file' + str(nfile) + '_' + ncall + '.avi'
+bgSubFname = saveDir + 'file' + str(nfile) + '_' + ncall
 
 tStart = va.frame2time(startFrame, aviProps) + (int(ncall)-1)*secPerCpu
 tEnd = tStart + secPerCpu
@@ -51,8 +52,9 @@ while True:
       break
 
   print("Processing video...")
-  mousePositions = va.processFrames(fname, aviFname, aviProps, tStart, tEnd, bg, pmts, nestThreshold, saveAVI=True)
+  mousePositions, meanFrame = va.processFrames(fname, aviFname, aviProps, tStart, tEnd, bg, pmts, nestThreshold, saveAVI=True)
   np.savetxt(trackFname, mousePositions)
+  np.save(bgSubFname, meanFrame)
   #data, results = va.analyseData(trackFname, aviProps, bg,  pmts, PLOT=False)
   #print(".AVI output file saved")
   break

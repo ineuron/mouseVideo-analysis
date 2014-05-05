@@ -2,6 +2,8 @@
 
 DIR=$1
 njobs=$2
+nfiles=$3
+jobPerFile=$4
 
 touch $DIR/file.txt
 echo $(ls $DIR/file*.txt | wc -l)
@@ -18,6 +20,9 @@ rm -f $DIR/file*.txt
 
 avimerge -o $DIR/trackingMovie.avi -i $DIR/file*.avi
 rm -f $DIR/file*.avi
+
+python $HOME/code/github/mouseVideo-analysis/npMerge.py $1 $3 $4
+rm -f $DIR/file*.npy
 
 python $HOME/code/github/mouseVideo-analysis/dataProcess.py $1
 
