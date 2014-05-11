@@ -142,7 +142,7 @@ initialdir = '/lmb/home/tbranco/data'
 fname = tkFileDialog.askopenfilenames(title='Choose the 1st file of the movie series', initialdir=initialdir, filetypes=[('Movie files', '*.avi')])
 
 directory, filename = os.path.split(fname[0])
-basename = filename.rstrip('.avi')
+basename = filename.rstrip('-------------.avi')
 adir = '/lmb/home/tbranco/analysis/' + basename + '/'
 os.system('mkdir -p '+ adir)
 

@@ -240,7 +240,7 @@ def processFrames(fname, aviFname, aviProps, tStart, tEnd, bg, pmts, nestThresho
         thsGray = dilate(thsGray, morphDiameter)
         frame[thsGray==255,1] = 255
         mouseSize.append(thsGray.sum())
-        if thsGray.sum()==0: #/255 < nestThreshold:
+        if (thsGray.sum()==0):
             if f==startFrame:
                 curPos = nestPosition
             else:
@@ -294,11 +294,12 @@ def analyseData(fname, aviProps, bg,  pmts, PLOT=True):
             arena.append(0)
 
     # Exploratory runs
-    runsLabel = []
+    runsLabel, runsStart = [], []
     r, i = 0, 0
     while i<len(arena):
         if arena[i]==1:
             r+=1       
+            runsStart.append(i*secPerFrame)
             while i<len(arena) and arena[i]==1:
                 runsLabel.append(r)
                 i+=1
@@ -328,8 +329,8 @@ def analyseData(fname, aviProps, bg,  pmts, PLOT=True):
       #plt.show()
       
 
-    results = [distSum, nestCounter, foodCounter, leftCounter, rightCounter, runsDistance, runsTime]
-    resultsDict = {'Total distance':[distSum], 'Nest time':[nestCounter], 'FoodArea time':[foodCounter], 'Left side time':[leftCounter], 'Right side time':[rightCounter], 'Number of runs':[len(runs)], 'Distance per run':[runsDistance], 'Time per run':[runsTime]}     
+    results = [distSum, nestCounter, foodCounter, leftCounter, rightCounter, runsDistance, runsTime, runsStart]
+    resultsDict = {'Total distance':[distSum], 'Nest time':[nestCounter], 'FoodArea time':[foodCounter], 'Left side time':[leftCounter], 'Right side time':[rightCounter], 'Number of runs':[len(runs)], 'Distance per run':[runsDistance], 'Time per run':[runsTime], 'Runs start time':[runsStart]}     
     #fsaveName = saveDir + fileName.rstrip("_trackingData.npy") + "_trackingDataProcessed.txt"
     #writeDict(resultsDict, fsaveName)
     #print fsaveName, "saved"
