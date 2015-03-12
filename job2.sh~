@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sh $HOME/code/github/mouseVideo-analysis/dataMerge.sh $1 $2

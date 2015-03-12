@@ -32,7 +32,7 @@ va.writeDict(resultsDict, activedir+'/trackingAnalysis.txt')
 fig.savefig(activedir+'/trackingFig.pdf')
 
 # Further analysis
-#pMatrix, xhist, yhist = da.getArenaMatrix(data, aviProps, plot=False)
-#np.save(activedir+'/arenaMatrix', [pMatrix, xhist, yhist])
+pMatrix, xhist, yhist = da.getArenaMatrix(data, aviProps, plot=False)
+np.save(activedir+'/arenaMatrix', [pMatrix, xhist, yhist])
 
 

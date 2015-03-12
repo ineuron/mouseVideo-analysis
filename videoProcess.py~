@@ -21,14 +21,7 @@ startFrame = int(sys.argv[3])
 #tEnd = int(sys.argv[4])
 nfile = sys.argv[4]
 ncall = sys.argv[5]
-if len(nfile)==1: 
-    nfile='00'+nfile
-elif len(nfile)==2:
-    nfile='0'+nfile
-if len(ncall)==1: 
-    ncall='00'+ncall
-elif len(ncall)==2:
-    ncall='0'+ncall
+if len(ncall)==1: ncall='0'+ncall
 secPerCpu = float(sys.argv[6])
 
 nestThreshold = 10
@@ -59,9 +52,9 @@ while True:
       break
 
   print("Processing video...")
-  mousePositions, meanFrame = va.processFrames(fname, aviFname, aviProps, tStart, tEnd, bg, pmts, nestThreshold, saveAVI=True)
+  mousePositions, bgSubFrames = va.processFrames(fname, aviFname, aviProps, tStart, tEnd, bg, pmts, nestThreshold, saveAVI=True)
   np.savetxt(trackFname, mousePositions)
-  np.save(bgSubFname, meanFrame)
+  np.save(bgSubFname, np.array(bgSubFrames))
   #data, results = va.analyseData(trackFname, aviProps, bg,  pmts, PLOT=False)
   #print(".AVI output file saved")
   break

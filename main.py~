@@ -65,9 +65,9 @@ for f in fileList[1:]:
       script = 'job.sh '+f+' '+activeDir+'/ '+str(startFrame)+' '+str(nfile)+' '+str(secPerCpu)
   else:
       #filename saveDir startFrame nfile ncall secPerCpu
-      #script =  'qsub -t 1-'+str(cpus)+' -l node_type=m620+ -N job_1 -o /dev/null -e /dev/null job.sh '+f+' '+activeDir+'/ '+str(startFrame)+' '+str(nfile)+' '+str(secPerCpu)
-      script =  'qsub -t 1-'+str(cpus)+' -N job_1 -o /dev/null -e /dev/null job.sh '+f+' '+activeDir+'/ '+str(startFrame)+' '+str(nfile)+' '+str(secPerCpu)
-      #script =  'qsub -t 1-'+str(cpus)+' -N job_1 -o /dev/null job.sh '+f+' '+activeDir+'/ '+str(startFrame)+' '+str(nfile)+' '+str(secPerCpu)
+      script =  'qsub -t 1-'+str(cpus)+' -l node_type=m620+ -N job_1 -o /dev/null -e /dev/null job.sh '+f+' '+activeDir+'/ '+str(startFrame)+' '+str(nfile)+' '+str(secPerCpu)
+      #script =  'qsub -t 1-'+str(cpus)+' -N job_1 -o /dev/null -e /dev/null job.sh '+f+' '+activeDir+'/ '+str(startFrame)+' '+str(nfile)+' '+str(secPerCpu)
+      #script =  'qsub -t 1-'+str(cpus)+' -l node_type=m620+ -N job_1 -e /dev/null job.sh '+f+' '+activeDir+'/ '+str(startFrame)+' '+str(nfile)+' '+str(secPerCpu)
   #print aviProps[6], endFrame-startFrame, va.time2frame(secPerCpu, aviProps), cpus
   #print script
   os.system(script)

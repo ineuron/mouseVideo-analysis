@@ -125,7 +125,7 @@ def vPrep(fname, saveDir, check=True):
       if uDecision=='y':
           arenaOk = True
       else:
-          print("Select new arena ")	
+          print("Select new arena ")
           points = va.setPoints(fname, aviProps, bg)
           pmts = [[ths], [morphDiameter], points[0], points[1], points[2], points[3]]
 
@@ -138,13 +138,12 @@ def vPrep(fname, saveDir, check=True):
 # --------------------------------------------------------------------------------------
 # Select movies to analyse
 initialdir = '/fhgfs/brancolab'
-#initialdir = '/isilon/brancolab/Sabine/'
+#initialdir = '/lmb/home/tbranco/testdata'
 fname = tkFileDialog.askopenfilenames(title='Choose the 1st file of the movie series', initialdir=initialdir, filetypes=[('Movie files', '*.avi')])
 
 directory, filename = os.path.split(fname[0])
 basename = filename.rstrip('-------------.avi')
-#adir = '/lmb/home/tbranco/analysis/' + basename + '/'
-adir = '/fhgfs/brancolab/' + basename + '/'
+adir = '/lmb/home/tbranco/analysis/' + basename + '/'
 os.system('mkdir -p '+ adir)
 
 while True:
@@ -169,6 +168,7 @@ for f in os.listdir(directory):
         #os.system('ln -s '+directory+'/'+f+' '+tempdir+'/file.'+str(n))
         filenames.append(f)
 
+print len(filenames), filenames
 # Order filenames and print to file
 counter = 0
 while counter<len(filenames):
